@@ -13,6 +13,7 @@ next
 
 # Tests
 cypress/videos
+cypress/screenshots
 
 # BD, logs
 *.log
