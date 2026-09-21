@@ -40,7 +40,7 @@ import { getCalendarDate } from 'vanilla-calendar-pro/utils';
 getCalendarDate('2026-09-21', 'islamic-umalqura'); // return: { year: 1448, month: 3, day: 10 } (10 Rabiʻ II 1448)
 ```
 
-6. **`getDateFromCalendar(year: number, month: number, day: number, calendar?: CalendarSystem)`**: the reverse of `getCalendarDate`. Returns the date in the string format `FormatDateString ('YYYY-MM-DD')`. Months and days outside their range roll over, like `Date`.
+6. **`getDateFromCalendar(year: number, month: number, day: number, calendar?: CalendarSystem)`**: the reverse of `getCalendarDate`. Returns the date in the string format `FormatDateString ('YYYY-MM-DD')`. Months and days outside their range roll over, like `Date`. Results outside the years 0000–9999 throw an error.
 ```ts
 import { getDateFromCalendar } from 'vanilla-calendar-pro/utils';
 getDateFromCalendar(1448, 0, 1, 'islamic-umalqura'); // return: '2026-06-16' (1 Muharram 1448)

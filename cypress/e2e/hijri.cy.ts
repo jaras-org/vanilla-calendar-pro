@@ -446,6 +446,37 @@ describe('Hijri (Umm al-Qura) calendar', () => {
     yearsOf('#hijri-switch-2023').should('deep.equal', ['1445']);
   });
 
+  it('restates a month-only configuration as the month that holds its 15th day, and back', () => {
+    visit();
+    monthsOf('#hijri-switch-month-only').should('deep.equal', ['0']);
+    yearsOf('#hijri-switch-month-only').should('deep.equal', ['2026']);
+    cy.get('#switch-month-only-to-hijri').click();
+    monthsOf('#hijri-switch-month-only').should('deep.equal', ['6']);
+    yearsOf('#hijri-switch-month-only').should('deep.equal', ['1447']);
+    cy.get('#hijri-switch-month-only [data-vc-date="2026-01-15"]').should('have.attr', 'data-vc-date-month', 'current');
+    cy.get('#switch-month-only-to-gregory').click();
+    monthsOf('#hijri-switch-month-only').should('deep.equal', ['0']);
+    yearsOf('#hijri-switch-month-only').should('deep.equal', ['2026']);
+  });
+
+  it('keeps the week on screen when a week calendar switches with month and year kept', () => {
+    visit();
+    prev('#hijri-switch-week', 3);
+    isosOf('#hijri-switch-week').should('deep.equal', isoDays('2026-08-31', 7));
+    monthsOf('#hijri-switch-week').should('deep.equal', ['8']);
+
+    cy.get('#switch-week-to-hijri-keep').click();
+    isosOf('#hijri-switch-week').should('deep.equal', isoDays('2026-08-31', 7));
+    labelsOf('#hijri-switch-week').should('deep.equal', numbers(18, 24));
+    monthsOf('#hijri-switch-week').should('deep.equal', ['2']);
+    yearsOf('#hijri-switch-week').should('deep.equal', ['1448']);
+
+    cy.get('#switch-week-to-gregory-keep').click();
+    isosOf('#hijri-switch-week').should('deep.equal', isoDays('2026-08-31', 7));
+    monthsOf('#hijri-switch-week').should('deep.equal', ['8']);
+    yearsOf('#hijri-switch-week').should('deep.equal', ['2026']);
+  });
+
   it('leaves the Gregorian calendar untouched', () => {
     visit();
     cy.get('#greg-control').should('not.have.attr', 'data-vc-calendar');
@@ -486,6 +517,15 @@ describe('Hijri (Umm al-Qura) calendar', () => {
       expect(() => vcUtils.getCalendarDate('foo' as never, HIJRI)).to.throw('is not a valid date');
       expect(() => vcUtils.getDateFromCalendar(1448.5, 0, 1, HIJRI)).to.throw('is not a valid date');
       expect(() => vcUtils.getCalendarDate(TODAY, 'persian' as never)).to.throw('The «calendar» parameter "persian"');
+
+      // Years before 1000 are zero-padded and round-trip; results outside 0000-9999 throw instead of returning 'NaN-NaN-NaN'
+      expect(vcUtils.getDateFromCalendar(1, 0, 1, HIJRI)).to.equal('0622-07-19');
+      expect(vcUtils.getCalendarDate('0622-07-19', HIJRI)).to.deep.equal({ year: 1, month: 0, day: 1 });
+      expect(vcUtils.getCalendarDate('0999-01-01')).to.deep.equal({ year: 999, month: 0, day: 1 });
+      expect(() => vcUtils.getDateFromCalendar(1e9, 0, 1)).to.throw('is not a valid date');
+      expect(() => vcUtils.getDateFromCalendar(2026, 0, 1e15)).to.throw('is not a valid date');
+      expect(() => vcUtils.getDateFromCalendar(1e6, 0, 1, HIJRI)).to.throw('is not a valid date');
+      expect(() => vcUtils.getDateFromCalendar(10000, 0, 1)).to.throw('is not a valid date');
     });
   });
 });

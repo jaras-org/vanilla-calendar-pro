@@ -39,6 +39,8 @@ const configs: Record<string, Options> = {
   'hijri-outside-hidden': { ...base, displayDatesOutside: false, selectedMonth: 3, selectedYear: 1448 },
   'hijri-switch': { dateToday: TODAY, selectedMonth: 8, selectedYear: 2026 },
   'hijri-switch-2023': { dateToday: TODAY, selectedMonth: 8, selectedYear: 2023 },
+  'hijri-switch-month-only': { dateToday: TODAY, selectedMonth: 0 },
+  'hijri-switch-week': { type: 'week', dateToday: TODAY, selectedMonth: 8, selectedYear: 2026 },
   'greg-control': { dateToday: TODAY, selectedMonth: 8, selectedYear: 2026 },
 };
 
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   hijriCalendars['hijri-input'].init();
 
-  ['switch', 'switch-2023'].forEach((name) => {
+  ['switch', 'switch-2023', 'switch-month-only', 'switch-week'].forEach((name) => {
     const calendar = hijriCalendars[`hijri-${name}`];
     const on = (suffix: string, handler: () => void) => document.getElementById(`${name}-${suffix}`)?.addEventListener('click', handler);
     on('to-hijri', () => calendar.set({ calendar: 'islamic-umalqura' }));

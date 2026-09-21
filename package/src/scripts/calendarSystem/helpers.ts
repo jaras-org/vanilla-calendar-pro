@@ -6,10 +6,12 @@ import {
   getMonthNames,
   getMonthStartDay,
   isCalendarSupported,
+  isoToDay,
   monthIndex,
 } from '@scripts/calendarSystem/core';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
+import resolveDate from '@scripts/utils/resolveDate';
 import setContext from '@scripts/utils/setContext';
 import type { Calendar, CalendarSystem, FormatDateString, Options, Range } from '@src/index';
 
@@ -95,14 +97,20 @@ const convertCalendarMonth = (self: Calendar, kind: 'options' | 'visible', from:
 
 // reset(): the month shown after update({ month: false, year: false }) when the calendar changed
 export const getVisibleMonthForReset = (self: Calendar) => {
-  const { calendar: from, selectedYear, selectedMonth } = self.context;
+  const { calendar: from, selectedYear, selectedMonth, currentType, displayWeekDate } = self.context;
   const to = self.calendar;
   if (!from || from === to || selectedYear === undefined || !isCalendarSupported(to)) return { year: selectedYear, month: selectedMonth };
+  // A week on screen keeps its place: its owner (the fourth day) decides the month in the new calendar.
+  if (currentType === 'week' && displayWeekDate) {
+    const { year, month } = getCalendarParts(to, dayToISO(isoToDay(displayWeekDate) + 3));
+    return { year, month };
+  }
   return convertCalendarMonth(self, 'visible', from, to, selectedYear, selectedMonth);
 };
 
 // set(): restate the configured selectedMonth/selectedYear in the new calendar, unless the same call passes both.
-// A missing half is taken from today in the previous calendar.
+// A missing half is taken from today in the previous calendar, and both halves of the result are set, so the new
+// calendar shows the month that holds day 15 of the old one and switching back restores it.
 export const convertCalendarOptions = (self: Calendar, previous: { calendar: CalendarSystem; month?: number; year?: number }, options: Options) => {
   const { calendar: from, month, year } = previous;
   const to = self.calendar;
@@ -111,8 +119,8 @@ export const convertCalendarOptions = (self: Calendar, previous: { calendar: Cal
   if (from === to || (hasMonth && hasYear) || (month === undefined && year === undefined)) return;
   if (!isCalendarSupported(from) || !isCalendarSupported(to)) return;
 
-  const today = getCalendarParts(from, self.context.dateToday ?? getDateString(new Date()));
+  const today = getCalendarParts(from, resolveDate(self.dateToday, getDateString(new Date())));
   const converted = convertCalendarMonth(self, 'options', from, to, year ?? today.year, month ?? today.month);
-  if (!hasMonth && month !== undefined) self.selectedMonth = converted.month;
-  if (!hasYear && year !== undefined) self.selectedYear = converted.year;
+  if (!hasMonth) self.selectedMonth = converted.month;
+  if (!hasYear) self.selectedYear = converted.year;
 };
