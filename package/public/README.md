@@ -1,9 +1,14 @@
 # Vanilla Calendar Pro - Lightweight and Functional JavaScript Plugin for Date and Time Selection
 
+> [!NOTE]
+> **jaras-org fork.** This is a fork of [uvarov-frontend/vanilla-calendar-pro](https://github.com/uvarov-frontend/vanilla-calendar-pro) **v3.3.2** that adds native Hijri (Umm al-Qura) support through a `calendar` option. The default, `calendar: 'gregory'`, behaves exactly like upstream.
+> It is not published to npm. Built, npm-shaped releases live on the `dist` branch under immutable tags `vX.Y.Z-hijri.N` and are served by jsDelivr's GitHub CDN.
+> Report fork issues [here](https://github.com/jaras-org/vanilla-calendar-pro/issues), not upstream.
+
 [![vanilla-calendar preview](https://vanilla-calendar.pro/vanilla-calendar-preview-v3.png?v1)](https://vanilla-calendar.pro)
 
 [![version](https://img.shields.io/npm/v/vanilla-calendar-pro.svg)](https://npmjs.com/package/vanilla-calendar-pro)
-[![tests](https://github.com/uvarov-frontend/vanilla-calendar/actions/workflows/pull_request.yml/badge.svg)](https://github.com/uvarov-frontend/vanilla-calendar/actions/workflows/pull_request.yml)
+[![CI](https://github.com/jaras-org/vanilla-calendar-pro/actions/workflows/ci.yml/badge.svg?branch=hijri)](https://github.com/jaras-org/vanilla-calendar-pro/actions/workflows/ci.yml)
 [![downloads](https://img.shields.io/npm/dm/vanilla-calendar-pro.svg)](https://npmjs.com/package/vanilla-calendar-pro)
 
 This is a versatile JavaScript date and time picker component with TypeScript support, compatible with any JavaScript frameworks and libraries. It is designed to be lightweight, easy to use, and feature-rich, without relying on external dependencies.

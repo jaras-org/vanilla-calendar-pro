@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [hijri]
+  pull_request:
+    branches: [hijri]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: lint + package:build
+    runs-on: ubuntu-24.04
+    env:
+      CYPRESS_INSTALL_BINARY: '0'
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn package:build
+      - name: Check dist shape
+        run: |
+          set -eu
+          V=$(node -p "require('./package/public/package.json').version")
+          for f in package.json index.mjs index.js index.d.ts types.d.ts styles/index.css utils/index.mjs utils/index.js; do test -s "package/dist/$f"; done
+          head -c 300 package/dist/index.mjs | grep -qF "v$V"
+          test "$(wc -l < package/dist/index.mjs)" -le 3
+          node -e "const s=require('fs').readFileSync('package/dist/index.mjs','utf8');process.exit(/\bimport\s*[\"'{*(]|\bfrom\s*[\"']/.test(s)?1:0)"
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: dist-${{ github.sha }}
+          path: |
+            package/dist
+            !package/dist/package.zip
+
+  e2e:
+    name: cypress (TZ=${{ matrix.tz }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        tz: [UTC, Asia/Riyadh, America/Los_Angeles, Pacific/Kiritimati]
+    env:
+      TZ: ${{ matrix.tz }}
+      CYPRESS_TZ: ${{ matrix.tz }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: cypress-io/github-action@v7.4.3
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:5173'
+      - uses: actions/upload-artifact@v7.0.1
+        if: failure()
+        with:
+          name: screenshots-${{ strategy.job-index }}
+          path: cypress/screenshots
