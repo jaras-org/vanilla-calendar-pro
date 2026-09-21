@@ -1,3 +1,4 @@
+import { getVisibleMonthForReset } from '@scripts/calendarSystem/helpers';
 import create from '@scripts/creators/create';
 import handleDayRangedSelection from '@scripts/handles/handleSelectDateRange/handleSelectDateRange';
 import { cleanupPending } from '@scripts/utils/animate';
@@ -15,8 +16,10 @@ const reset = (self: Calendar, { year, month, dates, time, locale }: Reset, recr
     time: self.selectedTime,
   };
 
-  self.selectedYear = year ? previousSelected.year : self.context.selectedYear;
-  self.selectedMonth = month ? previousSelected.month : self.context.selectedMonth;
+  // When the calendar changed, the month on screen is carried over in the new calendar.
+  const visible = getVisibleMonthForReset(self);
+  self.selectedYear = year ? previousSelected.year : visible.year;
+  self.selectedMonth = month ? previousSelected.month : visible.month;
   self.selectedTime = time ? previousSelected.time : self.context.selectedTime;
 
   self.selectedDates =

@@ -1,0 +1,41 @@
+---
+title: Hijri calendar
+description: Show Hijri (Umm al-Qura) months with the calendar parameter, while every date value stays a Gregorian ISO string.
+section: 3. Internationalization
+new: true
+---
+
+# Hijri calendar
+
+Set the `calendar` parameter to `'islamic-umalqura'` to show Hijri (Umm al-Qura) months instead of Gregorian ones. Month lengths, day numbers, month names, navigation, the month and year pickers and the bounds all follow the Hijri calendar, using the browser's `Intl`.
+
+<Sandbox example="internationalization-calendar-systems" />
+
+Combine it with a `locale`, `firstWeekday` and `selectedWeekends` for an Arabic calendar that starts on Saturday with a Friday–Saturday weekend:
+
+<Sandbox example="internationalization-calendar-systems-arabic" />
+
+## Dates stay Gregorian
+
+Only the display changes. `selectedDates`, `disableDates`, `dateMin`, `dateMax`, the `popups` keys and every other date value stay Gregorian `'YYYY-MM-DD'` strings, so they work with forms, APIs and databases as they are. Month/year values are in the active calendar instead: `selectedMonth`, `selectedYear` and the matching `context` values, where 0 is Muharram.
+
+To read the month on screen as dates, convert it with the utilities:
+
+```ts
+import { getDateFromCalendar } from 'vanilla-calendar-pro/utils';
+
+new Calendar('#calendar', {
+  calendar: 'islamic-umalqura',
+  onClickArrow(self) {
+    const { selectedYear, selectedMonth, calendar } = self.context;
+    const firstDay = getDateFromCalendar(selectedYear, selectedMonth, 1, calendar); // e.g. '2026-09-12'
+  },
+});
+```
+
+## Limits
+
+- The browsers' Umm al-Qura table covers 1300–1600 AH (1882–2174). Outside it, they fall back to the arithmetic Islamic calendar.
+- The table can differ by a day from an official moon-sighting announcement.
+- Week numbers stay ISO-style Gregorian weeks.
+- Right-to-left layouts are not mirrored by the calendar's styles.

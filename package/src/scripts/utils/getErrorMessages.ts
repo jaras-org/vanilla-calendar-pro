@@ -9,6 +9,9 @@ const errorMessages = {
   incorrectMonthsCount:
     'For the «multiple» calendar type, the «displayMonthsCount» parameter can have a value from 2 to 12, and for all others it cannot be greater than 1.',
   incorrectCollapseType: 'The «enableCollapse» parameter is only supported by the «default» and «week» calendar types.',
+  incorrectCalendar: (calendar: unknown) =>
+    `The «calendar» parameter "${String(calendar)}" is not supported. Use 'gregory' or 'islamic-umalqura' (the latter needs a browser whose Intl.DateTimeFormat supports it).`,
+  incorrectDate: (value: unknown) => `"${String(value)}" is not a valid date: expected an ISO "YYYY-MM-DD" string or integer year, month and day.`,
 };
 
 export default errorMessages;

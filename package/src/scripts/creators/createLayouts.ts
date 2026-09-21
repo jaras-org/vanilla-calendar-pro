@@ -1,3 +1,4 @@
+import { setCalendarAttribute } from '@scripts/calendarSystem/helpers';
 import layoutDefault from '@scripts/layouts/default';
 import layoutMonths from '@scripts/layouts/month';
 import layoutMultiple from '@scripts/layouts/multiple';
@@ -37,6 +38,7 @@ const createLayouts = (self: Calendar, target?: HTMLElement) => {
   self.context.mainElement.role = self.inputMode ? 'dialog' : 'group';
   self.context.mainElement.tabIndex = -1;
   self.context.mainElement.ariaLabel = self.labels.application;
+  setCalendarAttribute(self);
 
   if (self.context.currentType === 'multiple') {
     self.context.mainElement.innerHTML = self.sanitizerHTML(parseMultipleLayout(self, parseLayout(self, self.layouts[self.context.currentType])));

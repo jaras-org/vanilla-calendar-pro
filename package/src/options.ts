@@ -3,6 +3,7 @@ import labels from '@src/labels';
 import styles from '@src/styles';
 import type {
   AnimationOptions,
+  CalendarSystem,
   DateAny,
   DateMode,
   DatesArr,
@@ -36,6 +37,7 @@ export default class OptionsCalendar {
   themeAttrDetect: string = 'html[data-theme]';
 
   locale: Locale = 'en';
+  calendar: CalendarSystem = 'gregory';
 
   dateToday: DateAny = 'today';
   dateMin: DateAny = '1970-01-01';

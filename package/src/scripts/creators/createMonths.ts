@@ -1,8 +1,8 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import createLayouts from '@scripts/creators/createLayouts';
 import setMonthOrYearModifier from '@scripts/creators/setMonthOrYearModifier';
 import visibilityTitle from '@scripts/creators/visibilityTitle';
 import getColumnID from '@scripts/utils/getColumnID';
-import getDate from '@scripts/utils/getDate';
 import updateRovingTabIndex from '@scripts/utils/rovingTabIndex';
 import setContext from '@scripts/utils/setContext';
 import type { Calendar } from '@src/index';
@@ -70,8 +70,8 @@ const createMonths = (self: Calendar, target?: HTMLElement) => {
       monthsEl.appendChild(rowEl);
     }
 
-    const dateMin = getDate(self.context.dateMin);
-    const dateMax = getDate(self.context.dateMax);
+    const dateMin = toCalendarView(self, self.context.dateMin);
+    const dateMax = toCalendarView(self, self.context.dateMax);
     const monthCount = self.context.displayMonthsCount - 1;
     const { columnID } = getColumnID(self, 'month');
 

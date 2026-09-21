@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1,width=device-width" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Vanilla Calendar Pro — Hijri (Umm al-Qura) calendar</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+    <link rel="stylesheet" href="../../index.css" />
+    <script defer src="./main.ts" type="module"></script>
+  </head>
+  <body
+    class="font-sans bg-white bg-light-mode text-slate-900 min-h-screen container mx-auto text-center flex flex-col items-center py-12 dark:bg-slate-900 dark:bg-dark-mode dark:text-white"
+  >
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <main id="main-content" class="flex w-full flex-col items-center">
+      <h1 class="block mb-7 text-6xl font-extrabold">Vanilla Calendar Pro</h1>
+      <p class="block max-w-[700px] text-lg mb-12 dark:text-slate-400">
+        The <code>calendar</code> option: Hijri (Umm al-Qura) grids from the browser's Intl. Every date value stays an ISO Gregorian string.
+      </p>
+      <div class="flex flex-col items-center gap-12">
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>calendar: 'islamic-umalqura'</code> &mdash; today is 10 Rabiʻ II 1448</figcaption>
+          <div id="hijri-default"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Ramadan 1447</figcaption>
+          <div id="hijri-ramadan"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Dhuʻl-Hijjah 1447 (year wrap)</figcaption>
+          <div id="hijri-wrap"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'multiple'</code> &mdash; two Hijri months, range selection</figcaption>
+          <div id="hijri-multiple"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>dateMin</code>/<code>dateMax</code>: 1 Rabiʻ I – 30 Jumada I 1448</figcaption>
+          <div id="hijri-bounds"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>selectionYearsMode: false</code></figcaption>
+          <div id="hijri-year-locked"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'week'</code> with week numbers</figcaption>
+          <div id="hijri-week"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>enableSwipe</code></figcaption>
+          <div id="hijri-swipe"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>enableCollapse</code></figcaption>
+          <div id="hijri-collapse"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3" lang="ar">
+          <figcaption class="text-sm dark:text-slate-400" lang="en"><code>locale: 'ar-SA'</code>, Saturday first, Fri/Sat weekend</figcaption>
+          <div id="hijri-ar"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'month'</code></figcaption>
+          <div id="hijri-month-type"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'year'</code></figcaption>
+          <div id="hijri-year-type"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>enableJumpToSelectedDate</code> (2027-02-22)</figcaption>
+          <div id="hijri-jump"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>displayDateMin: '2099-01-01'</code></figcaption>
+          <div id="hijri-display-future"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'multiple'</code> with <code>dateMax: '2027-03-08'</code></figcaption>
+          <div id="hijri-multiple-max"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>monthsToSwitch: 2</code></figcaption>
+          <div id="hijri-months-to-switch"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>displayDatesOutside: false</code></figcaption>
+          <div id="hijri-outside-hidden"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Gregorian September 2026, switched with <code>set()</code></figcaption>
+          <div id="hijri-switch"></div>
+          <div class="flex gap-2">
+            <button id="switch-to-hijri" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Hijri</button>
+            <button id="switch-to-gregory" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Gregorian</button>
+            <button id="switch-to-hijri-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Hijri, keep month</button>
+            <button id="switch-to-gregory-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Gregorian, keep month</button>
+          </div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Gregorian September 2023, switched with <code>set()</code></figcaption>
+          <div id="hijri-switch-2023"></div>
+          <div class="flex gap-2">
+            <button id="switch-2023-to-hijri" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Hijri</button>
+            <button id="switch-2023-to-gregory" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Gregorian</button>
+            <button id="switch-2023-to-hijri-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Hijri, keep month</button>
+            <button id="switch-2023-to-gregory-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Gregorian, keep month</button>
+          </div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Only <code>selectedMonth: 0</code> configured, switched with <code>set()</code></figcaption>
+          <div id="hijri-switch-month-only"></div>
+          <div class="flex gap-2">
+            <button id="switch-month-only-to-hijri" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Hijri</button>
+            <button id="switch-month-only-to-gregory" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Gregorian</button>
+            <button id="switch-month-only-to-hijri-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Hijri, keep month</button>
+            <button id="switch-month-only-to-gregory-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Gregorian, keep month</button>
+          </div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>type: 'week'</code>, switched with <code>set()</code></figcaption>
+          <div id="hijri-switch-week"></div>
+          <div class="flex gap-2">
+            <button id="switch-week-to-hijri" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Hijri</button>
+            <button id="switch-week-to-gregory" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">set Gregorian</button>
+            <button id="switch-week-to-hijri-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Hijri, keep month</button>
+            <button id="switch-week-to-gregory-keep" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Gregorian, keep month</button>
+          </div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Gregorian control (default options)</figcaption>
+          <div id="greg-control"></div>
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400"><code>inputMode</code></figcaption>
+          <label for="hijri-input" class="text-sm">Hijri date</label>
+          <input id="hijri-input" class="input" name="hijri-date" type="text" readonly />
+        </figure>
+        <figure class="flex flex-col items-center gap-3">
+          <figcaption class="text-sm dark:text-slate-400">Unsupported calendars</figcaption>
+          <button id="btn-invalid" type="button" class="rounded-lg border border-slate-500 px-3 py-1 text-sm">Try unsupported calendars</button>
+          <div id="hijri-invalid"></div>
+        </figure>
+        <pre id="log" class="max-w-[700px] whitespace-pre-wrap text-left text-sm"></pre>
+      </div>
+    </main>
+  </body>
+</html>

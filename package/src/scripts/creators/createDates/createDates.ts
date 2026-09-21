@@ -1,3 +1,5 @@
+import createCalendarDates from '@scripts/calendarSystem/createCalendarDates';
+import { isCustomCalendar } from '@scripts/calendarSystem/helpers';
 import createDatePopup from '@scripts/creators/createDates/createDatePopup';
 import createDatesFromCurrentMonth from '@scripts/creators/createDates/createDatesFromCurrentMonth';
 import createDatesFromNextMonth from '@scripts/creators/createDates/createDatesFromNextMonth';
@@ -22,6 +24,8 @@ const createDates = (self: Calendar) => {
       createWeekNumbers(self, 0, 7, weekNumbersEls[index], datesEl);
       return;
     }
+
+    if (isCustomCalendar(self)) return createCalendarDates(self, datesEl, weekNumbersEls[index], index);
 
     const currentDate = new Date(initDate);
     currentDate.setMonth(currentDate.getMonth() + index);

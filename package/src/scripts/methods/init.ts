@@ -1,3 +1,4 @@
+import { validateCalendar } from '@scripts/calendarSystem/initCalendar';
 import create from '@scripts/creators/create';
 import updateDateModifiers from '@scripts/creators/createDates/updateDateModifiers';
 import handleArrowKeys from '@scripts/handles/handleArrowKeys';
@@ -12,6 +13,8 @@ import type { Calendar } from '@src/index';
 
 const init = (self: Calendar) => {
   if (self.context.isInit) throw new Error(errorMessages.alreadyInit);
+  // In input mode the calendar is only built on the first open, so check it here to fail synchronously.
+  validateCalendar(self.calendar);
 
   setContext(self, 'originalElement', self.context.mainElement.cloneNode(true) as HTMLElement);
   setContext(self, 'isInit', true);

@@ -1,8 +1,11 @@
+import { getCalendarColumn } from '@scripts/calendarSystem/helpers';
 import type { Calendar } from '@src/index';
 
 const visibilityHandler = (self: Calendar, el: HTMLButtonElement, index: number, initDate: Date, type: 'month' | 'year') => {
-  const yearID = new Date(initDate.setFullYear(self.context.selectedYear as number, (self.context.selectedMonth as number) + index)).getFullYear();
-  const monthID = new Date(initDate.setMonth((self.context.selectedMonth as number) + index)).getMonth();
+  const calendarColumn = getCalendarColumn(self, index);
+  const yearID =
+    calendarColumn?.year ?? new Date(initDate.setFullYear(self.context.selectedYear as number, (self.context.selectedMonth as number) + index)).getFullYear();
+  const monthID = calendarColumn?.month ?? new Date(initDate.setMonth((self.context.selectedMonth as number) + index)).getMonth();
   const monthLabel = self.context.locale.months.long[monthID];
 
   const columnEl = el.closest('[data-vc="column"]');

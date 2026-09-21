@@ -1,3 +1,4 @@
+import { getCalendarArrowsHidden, isCustomCalendar, toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import type { Calendar } from '@src/index';
@@ -8,6 +9,8 @@ const setVisibilityArrows = (arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement,
 };
 
 const handleDefaultType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement) => {
+  if (isCustomCalendar(self)) return setVisibilityArrows(arrowPrevEl, arrowNextEl, ...getCalendarArrowsHidden(self));
+
   const currentSelectedDate = getDate(getDateString(new Date(self.context.selectedYear as number, self.context.selectedMonth as number, 1)));
   const jumpDateMin = new Date(currentSelectedDate.getTime());
   const jumpDateMax = new Date(currentSelectedDate.getTime());
@@ -35,8 +38,8 @@ const handleDefaultType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl
 };
 
 const handleYearType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement) => {
-  const dateMin = getDate(self.context.dateMin);
-  const dateMax = getDate(self.context.dateMax);
+  const dateMin = toCalendarView(self, self.context.dateMin);
+  const dateMax = toCalendarView(self, self.context.dateMax);
   const isArrowPrevHidden = !!(dateMin.getFullYear() && self.context.displayYear - 7 <= dateMin.getFullYear());
   const isArrowNextHidden = !!(dateMax.getFullYear() && self.context.displayYear + 7 >= dateMax.getFullYear());
 
@@ -54,7 +57,7 @@ const handleWeekType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: H
   const ownerYear = (start: Date) => {
     const reference = new Date(start);
     reference.setDate(start.getDate() + 3);
-    return reference.getFullYear();
+    return toCalendarView(self, reference).getFullYear();
   };
   const prevChangesYear = !self.selectionYearsMode && ownerYear(prevWeekStart) !== self.context.selectedYear;
   const nextChangesYear = !self.selectionYearsMode && ownerYear(nextWeekStart) !== self.context.selectedYear;

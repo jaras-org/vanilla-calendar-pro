@@ -68,6 +68,16 @@ export type LocaleStated = {
 
 export type Locale = string | LocaleStated;
 
+// Intl calendar id. 'gregory' is upstream's behaviour; 'islamic-umalqura' is the Hijri (Umm al-Qura) calendar.
+export type CalendarSystem = 'gregory' | 'islamic-umalqura';
+
+// A day in a calendar system: month is 0-based (0 = January / Muharram).
+export type CalendarDateParts = {
+  year: number;
+  month: Range<12>;
+  day: number;
+};
+
 export type Popup = {
   modifier?: string;
   html?: string;
@@ -103,6 +113,7 @@ export type ContextVariables = {
   cleanupHandlers: Array<() => void>;
   cleanupSystemTheme?: () => void;
   currentType: TypesCalendar;
+  calendar: CalendarSystem;
   locale: LocaleStated;
   mainElement: HTMLElement;
   originalElement: HTMLElement;

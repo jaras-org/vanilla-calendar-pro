@@ -1,3 +1,4 @@
+import { isCustomCalendar, shiftCalendarMonth } from '@scripts/calendarSystem/helpers';
 import createDates from '@scripts/creators/createDates/createDates';
 import createYears from '@scripts/creators/createYears';
 import visibilityArrows from '@scripts/creators/visibilityArrows';
@@ -23,6 +24,7 @@ const DATES = '[data-vc="dates"]';
 const step = (route: Route, amount: number) => (route === 'next' ? amount : -amount);
 
 const shiftMonth = (self: Calendar, route: Route) => {
+  if (isCustomCalendar(self)) return shiftCalendarMonth(self, step(route, self.monthsToSwitch));
   const jumpDate = getDate(getDateString(new Date(self.context.selectedYear, self.context.selectedMonth, 1)));
   jumpDate.setMonth(jumpDate.getMonth() + step(route, self.monthsToSwitch));
   setContext(self, 'selectedMonth', jumpDate.getMonth() as Range<12>);

@@ -1,10 +1,10 @@
+import { isCustomCalendar, shiftCalendarMonth, toCalendarView } from '@scripts/calendarSystem/helpers';
 import create from '@scripts/creators/create';
 import createMonths from '@scripts/creators/createMonths';
 import createYears from '@scripts/creators/createYears';
 import setMonthOrYearModifier from '@scripts/creators/setMonthOrYearModifier';
 import animate, { captureOpacity, playOpacity } from '@scripts/utils/animate';
 import getColumnID from '@scripts/utils/getColumnID';
-import getDate from '@scripts/utils/getDate';
 import setContext from '@scripts/utils/setContext';
 import type { Calendar, Range } from '@src/index';
 
@@ -46,8 +46,8 @@ const getValue = (self: Calendar, type: (typeof typeClick)[number], id: number) 
 
 const handleMultipleYearSelection = (self: Calendar, itemEl: HTMLElement) => {
   const selectedYear = getValue(self, 'year', Number(itemEl.dataset.vcYearsYear));
-  const dateMin = getDate(self.context.dateMin);
-  const dateMax = getDate(self.context.dateMax);
+  const dateMin = toCalendarView(self, self.context.dateMin);
+  const dateMax = toCalendarView(self, self.context.dateMax);
   const monthCount = self.context.displayMonthsCount - 1;
   const { columnID } = getColumnID(self, 'year');
 
@@ -73,8 +73,8 @@ const handleMultipleMonthSelection = (self: Calendar, itemEl: HTMLElement) => {
   const yearEl = column.querySelector('[data-vc="year"]') as HTMLElement;
   const selectedMonth = getValue(self, 'month', Number(itemEl.dataset.vcMonthsMonth));
   const selectedYear = Number(yearEl.dataset.vcYear);
-  const dateMin = getDate(self.context.dateMin);
-  const dateMax = getDate(self.context.dateMax);
+  const dateMin = toCalendarView(self, self.context.dateMin);
+  const dateMax = toCalendarView(self, self.context.dateMax);
 
   const isBeforeMinDate = selectedMonth < dateMin.getMonth() && selectedYear <= dateMin.getFullYear();
   const isAfterMaxDate = selectedMonth > dateMax.getMonth() && selectedYear >= dateMax.getFullYear();
@@ -95,6 +95,8 @@ const handleItemClick = (self: Calendar, event: MouseEvent, type: (typeof typeCl
     },
   };
   selectByType[type]();
+  // The multiple-month picker can leave a month outside 0-11 (e.g. -1); upstream relies on Date overflow.
+  if (isCustomCalendar(self)) shiftCalendarMonth(self, 0);
 
   const actionByType = {
     year: () => self.onClickYear?.(self, event),

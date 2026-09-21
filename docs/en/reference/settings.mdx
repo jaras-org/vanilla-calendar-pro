@@ -3,6 +3,7 @@ title: Settings
 description: Calendar settings, including display type, input mode, positioning, localization, dates and times.
 new:
   - animation
+  - calendar
   - enableCollapse
   - enableSwipe
 section: 4
@@ -213,6 +214,35 @@ new Calendar('#calendar', {
 
 This parameter sets the language localization of the calendar.
 You can specify a language label according to <a href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry" target="_blank" rel="nofollow noreferrer">BCP 47</a> or provide arrays of month and weekday names, see more details [here](/docs/learn/internationalization-locale).
+
+A `-u-ca-` extension in the language label (e.g. `'ar-SA-u-ca-islamic-umalqura'`) does not change the grid: use [calendar](/docs/reference/settings#calendar) for that. With a non-Gregorian `calendar`, month names are taken from that calendar, and a manually provided `locale` object has to list its months (e.g. Muharram to Dhuʻl-Hijjah).
+
+---
+
+## calendar
+
+`Type: String`
+
+`Default: 'gregory'`
+
+`Options: 'gregory' | 'islamic-umalqura'`
+
+```ts
+new Calendar('#calendar', {
+  calendar: 'islamic-umalqura',
+});
+```
+
+This parameter sets the calendar system of the grid. `'islamic-umalqura'` shows Hijri (Umm al-Qura) months: their real length of 29 or 30 days, Hijri day numbers, month names from the browser's `Intl` for the current `locale`, and navigation, month and year pickers, bounds and multiple months by Hijri month and year.
+
+Only the display changes. Every date value stays a Gregorian `'YYYY-MM-DD'` string: `selectedDates`, `disableDates`, `enableDates`, `dateMin`, `dateMax`, `displayDateMin`, `displayDateMax`, `dateToday`, `selectedHolidays`, the `popups` keys and `data-vc-date`. Month/year values are in the active calendar: [selectedMonth](/docs/reference/settings#selectedmonth), [selectedYear](/docs/reference/settings#selectedyear), `context.selectedMonth`, `context.selectedYear` and `context.displayYear` (0 = Muharram, the year e.g. 1448). Use [getCalendarDate and getDateFromCalendar](/docs/reference/utilities) to convert.
+
+<Info>
+  The Hijri calendar needs a browser whose `Intl.DateTimeFormat` supports `islamic-umalqura`; otherwise the calendar throws an error, which
+  [isCalendarSupported](/docs/reference/utilities) lets you check first. The browsers' Umm al-Qura table covers 1300–1600 AH (1882–2174); outside it, they fall
+  back to the arithmetic Islamic calendar. The table can differ by a day from an official moon-sighting announcement. Week numbers stay ISO-style Gregorian
+  weeks, and day numbers use the same digits as the Gregorian calendar.
+</Info>
 
 ---
 
@@ -758,7 +788,7 @@ new Calendar('#calendar', {
 });
 ```
 
-This parameter defines the month that will be displayed when the calendar is initialized. According to JS standards, months are numbered from 0 to 11. See [enableJumpToSelectedDate](/docs/reference/settings#enablejumptoselecteddate) to default to the first selected date.
+This parameter defines the month that will be displayed when the calendar is initialized. According to JS standards, months are numbered from 0 to 11. See [enableJumpToSelectedDate](/docs/reference/settings#enablejumptoselecteddate) to default to the first selected date. With a non-Gregorian [calendar](/docs/reference/settings#calendar), the month is in that calendar (0 = Muharram).
 
 ---
 
@@ -776,7 +806,7 @@ new Calendar('#calendar', {
 });
 ```
 
-This parameter defines the year that will be displayed when the calendar is initialized. See [enableJumpToSelectedDate](/docs/reference/settings#enablejumptoselecteddate) to default to the first selected date.
+This parameter defines the year that will be displayed when the calendar is initialized. See [enableJumpToSelectedDate](/docs/reference/settings#enablejumptoselecteddate) to default to the first selected date. With a non-Gregorian [calendar](/docs/reference/settings#calendar), the year is in that calendar (e.g. 1448).
 
 ---
 

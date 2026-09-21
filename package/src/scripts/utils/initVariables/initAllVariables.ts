@@ -1,3 +1,4 @@
+import initCalendar from '@scripts/calendarSystem/initCalendar';
 import errorMessages from '@scripts/utils/getErrorMessages';
 import initMonthsCount from '@scripts/utils/initVariables/initMonthsCount';
 import initRange from '@scripts/utils/initVariables/initRange';
@@ -11,6 +12,7 @@ import type { Calendar } from '@src/index';
 const initAllVariables = (self: Calendar) => {
   if (self.enableCollapse && !['default', 'week'].includes(self.type)) throw new Error(errorMessages.incorrectCollapseType);
   setContext(self, 'currentType', self.type);
+  initCalendar(self);
   initMonthsCount(self);
   initRange(self);
   initSelectedMonthYear(self);

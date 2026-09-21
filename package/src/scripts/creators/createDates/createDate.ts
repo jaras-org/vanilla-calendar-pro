@@ -1,3 +1,4 @@
+import { getIntlCalendarOptions } from '@scripts/calendarSystem/helpers';
 import setDateModifier from '@scripts/creators/createDates/setDateModifier';
 import getDate from '@scripts/utils/getDate';
 import getLocaleString from '@scripts/utils/getLocaleString';
@@ -43,7 +44,7 @@ const createDate = (
     dateBtnEl = document.createElement('button');
     dateBtnEl.className = self.styles.dateBtn;
     dateBtnEl.type = 'button';
-    dateBtnEl.ariaLabel = getLocaleString(dateStr, localeDate, { dateStyle: 'long', timeZone: 'UTC' });
+    dateBtnEl.ariaLabel = getLocaleString(dateStr, localeDate, { dateStyle: 'long', timeZone: 'UTC', ...getIntlCalendarOptions(self) });
     dateBtnEl.dataset.vcDateBtn = '';
     dateBtnEl.innerText = String(dateID);
     dateEl.appendChild(dateBtnEl);

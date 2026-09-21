@@ -68,3 +68,42 @@ jobs:
         with:
           name: screenshots-${{ strategy.job-index }}
           path: cypress/screenshots
+
+  e2e-chrome:
+    name: cypress hijri specs (Chrome, TZ=America/Los_Angeles)
+    runs-on: ubuntu-24.04
+    env:
+      TZ: America/Los_Angeles
+      CYPRESS_TZ: America/Los_Angeles
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: cypress-io/github-action@v7.4.3
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:5173'
+          browser: chrome
+          spec: cypress/e2e/hijri.cy.ts,cypress/e2e/calendarSystem.cy.ts
+
+  dist-smoke:
+    name: dist smoke (built bundle)
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: dist-${{ github.sha }}
+          path: package/dist
+      - uses: cypress-io/github-action@v7.4.3
+        with:
+          start: python3 -m http.server 8931 --bind 127.0.0.1 -d package/dist
+          wait-on: 'http://127.0.0.1:8931'
+          spec: cypress/e2e/dist.cy.ts
+          config: baseUrl=http://127.0.0.1:8931
+          env: DIST=1
