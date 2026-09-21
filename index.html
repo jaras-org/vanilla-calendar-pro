@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Vanilla Calendar Pro is a versatile JavaScript date and time picker component with TypeScript support, making it compatible with any JavaScript frameworks and libraries.</title>
+    <link href="./styles/index.css" rel="stylesheet" />
+    <script src="./utils/index.js" defer></script>
+    <script src="./index.js" defer></script>
+  </head>
+  <body style="display: flex; justify-items: flex-start">
+    <div id="calendar"></div>
+    <div id="calendar-hijri"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Destructuring the Calendar constructor and its utilities.
+        const { Calendar } = window.VanillaCalendarPro;
+        const { getDateString } = window.VanillaCalendarProUtils;
+
+        // Instantiate the calendar and initialize it.
+        const calendar = new Calendar('#calendar', { animation: true, enableSwipe: true, enableCollapse: true });
+        calendar.init();
+
+        // The Hijri (Umm al-Qura) calendar of this fork; every date value stays an ISO Gregorian string.
+        const calendarHijri = new Calendar('#calendar-hijri', { calendar: 'islamic-umalqura', dateToday: '2026-09-21', selectedDates: ['2026-09-21'] });
+        calendarHijri.init();
+
+        // Create logs for demonstration.
+        console.log('A copy of the calendar:', calendar);
+        console.log('Date string conversion utility:', getDateString(new Date()));
+      });
+    </script>
+  </body>
+</html>

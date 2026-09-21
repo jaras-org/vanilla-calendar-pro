@@ -1,0 +1,72 @@
+{
+  "name": "vanilla-calendar-pro",
+  "description": "Vanilla Calendar Pro with native Hijri (Umm al-Qura) calendar support: jaras-org fork of uvarov-frontend/vanilla-calendar-pro. The Vanilla Calendar Pro is a versatile JavaScript date and time picker component with TypeScript support, making it compatible with any JavaScript frameworks and libraries. It is designed to be lightweight, easy to use, and feature-rich, without relying on external dependencies.",
+  "version": "3.3.2-hijri.1",
+  "private": false,
+  "homepage": "https://github.com/jaras-org/vanilla-calendar-pro#readme",
+  "keywords": [
+    "calendar",
+    "datepicker",
+    "timepicker",
+    "date-picker",
+    "vanilla-js",
+    "javascript",
+    "typescript",
+    "react",
+    "native",
+    "pure",
+    "picker",
+    "vanilla",
+    "default",
+    "js",
+    "ts",
+    "hijri",
+    "islamic-calendar",
+    "umm-al-qura"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaras-org/vanilla-calendar-pro.git"
+  },
+  "author": {
+    "name": "Yury Uvarov",
+    "email": "uvarov.frontend@gmail.com",
+    "url": "https://frontend.uvarov.tech"
+  },
+  "contributors": [
+    {
+      "name": "jaras-org",
+      "url": "https://github.com/jaras-org"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/jaras-org/vanilla-calendar-pro/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://buymeacoffee.com/uvarov"
+  },
+  "license": "MIT",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "types": "./index.d.ts",
+  "style": "./styles/index.css",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.js",
+      "import": "./index.mjs",
+      "default": "./index.mjs"
+    },
+    "./utils": {
+      "types": "./utils/index.d.ts",
+      "require": "./utils/index.js",
+      "import": "./utils/index.mjs",
+      "default": "./utils/index.mjs"
+    },
+    "./styles/*": "./styles/*",
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
