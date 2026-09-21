@@ -3,6 +3,12 @@
 > [!NOTE]
 > **jaras-org fork.** This is a fork of [uvarov-frontend/vanilla-calendar-pro](https://github.com/uvarov-frontend/vanilla-calendar-pro) **v3.3.2** that adds native Hijri (Umm al-Qura) support through a `calendar` option. The default, `calendar: 'gregory'`, behaves exactly like upstream.
 > It is not published to npm. Built, npm-shaped releases live on the `dist` branch under immutable tags `vX.Y.Z-hijri.N` and are served by jsDelivr's GitHub CDN.
+>
+> - ESM: `https://cdn.jsdelivr.net/gh/jaras-org/vanilla-calendar-pro@v3.3.2-hijri.1/index.mjs`
+> - Utils: `https://cdn.jsdelivr.net/gh/jaras-org/vanilla-calendar-pro@v3.3.2-hijri.1/utils/index.mjs`
+> - CSS: `https://cdn.jsdelivr.net/gh/jaras-org/vanilla-calendar-pro@v3.3.2-hijri.1/styles/index.css`
+> - UMD: `https://cdn.jsdelivr.net/gh/jaras-org/vanilla-calendar-pro@v3.3.2-hijri.1/index.js` (`window.VanillaCalendarPro`)
+>
 > Report fork issues [here](https://github.com/jaras-org/vanilla-calendar-pro/issues), not upstream.
 
 [![vanilla-calendar preview](https://vanilla-calendar.pro/vanilla-calendar-preview-v3.png?v1)](https://vanilla-calendar.pro)
