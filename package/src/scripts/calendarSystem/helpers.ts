@@ -1,8 +1,17 @@
-import { addMonths, dayToISO, getCalendarParts, getMonthNames, getMonthStartDay, monthIndex } from '@scripts/calendarSystem/core';
+import {
+  addMonths,
+  convertMonth,
+  dayToISO,
+  getCalendarParts,
+  getMonthNames,
+  getMonthStartDay,
+  isCalendarSupported,
+  monthIndex,
+} from '@scripts/calendarSystem/core';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import setContext from '@scripts/utils/setContext';
-import type { Calendar, FormatDateString } from '@src/index';
+import type { Calendar, CalendarSystem, FormatDateString, Options, Range } from '@src/index';
 
 // Instance helpers. For the Gregorian calendar each of them returns exactly what upstream used,
 // so the default output stays identical.
@@ -64,4 +73,46 @@ export const setCalendarMonthNames = (self: Calendar, locale: string, capitalize
 export const setCalendarAttribute = (self: Calendar) => {
   if (isCustomCalendar(self)) self.context.mainElement.dataset.vcCalendar = self.context.calendar;
   else self.context.mainElement.removeAttribute('data-vc-calendar');
+};
+
+type YearMonth = { year: number; month: Range<12> };
+type Conversion = { from: CalendarSystem; to: CalendarSystem; source: YearMonth; result: YearMonth };
+const conversions = new WeakMap<Calendar, Partial<Record<'options' | 'visible', Conversion>>>();
+
+// Months of two calendars don't line up, so converting a month there and back doesn't always land on the
+// original one. A conversion that undoes the previous one therefore returns that one's source.
+const convertCalendarMonth = (self: Calendar, kind: 'options' | 'visible', from: CalendarSystem, to: CalendarSystem, year: number, month: number) => {
+  const memo = conversions.get(self) ?? {};
+  const last = memo[kind];
+  if (last && last.from === to && last.to === from && last.result.year === year && last.result.month === month) return { ...last.source };
+
+  const source = addMonths(year, month);
+  const result = convertMonth(from, to, source.year, source.month);
+  memo[kind] = { from, to, source, result };
+  conversions.set(self, memo);
+  return result;
+};
+
+// reset(): the month shown after update({ month: false, year: false }) when the calendar changed
+export const getVisibleMonthForReset = (self: Calendar) => {
+  const { calendar: from, selectedYear, selectedMonth } = self.context;
+  const to = self.calendar;
+  if (!from || from === to || selectedYear === undefined || !isCalendarSupported(to)) return { year: selectedYear, month: selectedMonth };
+  return convertCalendarMonth(self, 'visible', from, to, selectedYear, selectedMonth);
+};
+
+// set(): restate the configured selectedMonth/selectedYear in the new calendar, unless the same call passes both.
+// A missing half is taken from today in the previous calendar.
+export const convertCalendarOptions = (self: Calendar, previous: { calendar: CalendarSystem; month?: number; year?: number }, options: Options) => {
+  const { calendar: from, month, year } = previous;
+  const to = self.calendar;
+  const hasMonth = options.selectedMonth !== undefined;
+  const hasYear = options.selectedYear !== undefined;
+  if (from === to || (hasMonth && hasYear) || (month === undefined && year === undefined)) return;
+  if (!isCalendarSupported(from) || !isCalendarSupported(to)) return;
+
+  const today = getCalendarParts(from, self.context.dateToday ?? getDateString(new Date()));
+  const converted = convertCalendarMonth(self, 'options', from, to, year ?? today.year, month ?? today.month);
+  if (!hasMonth && month !== undefined) self.selectedMonth = converted.month;
+  if (!hasYear && year !== undefined) self.selectedYear = converted.year;
 };

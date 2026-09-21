@@ -6,6 +6,8 @@ import OptionsCalendar from '@src/options';
 import type {
   AnimationOptions,
   AnimationTiming,
+  CalendarDateParts,
+  CalendarSystem,
   ContextVariables,
   DateAny,
   DateMode,
@@ -93,6 +95,8 @@ export class Calendar extends OptionsCalendar {
 export {
   AnimationOptions,
   AnimationTiming,
+  CalendarDateParts,
+  CalendarSystem,
   DateAny,
   DateMode,
   DatesArr,

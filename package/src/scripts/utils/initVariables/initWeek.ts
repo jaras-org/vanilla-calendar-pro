@@ -1,4 +1,4 @@
-import { toCalendarView } from '@scripts/calendarSystem/helpers';
+import { getCalendarMonthStartDate, isCustomCalendar, toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import getWeekStart from '@scripts/utils/getWeekStart';
@@ -30,7 +30,8 @@ const initWeek = (self: Calendar, reanchor = false) => {
   }
 
   const anchor = ([selectedDates?.[0], dateToday].filter(Boolean) as FormatDateString[]).map(getDate).find(isSelectedMonth);
-  setContext(self, 'displayWeekDate', getDateString(getWeekStart(anchor ?? new Date(selectedYear, selectedMonth, 1), self.firstWeekday)));
+  const monthStart = isCustomCalendar(self) ? getCalendarMonthStartDate(self, selectedYear, selectedMonth) : new Date(selectedYear, selectedMonth, 1);
+  setContext(self, 'displayWeekDate', getDateString(getWeekStart(anchor ?? monthStart, self.firstWeekday)));
 };
 
 export default initWeek;

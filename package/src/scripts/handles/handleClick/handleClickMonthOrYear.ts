@@ -1,4 +1,4 @@
-import { toCalendarView } from '@scripts/calendarSystem/helpers';
+import { isCustomCalendar, shiftCalendarMonth, toCalendarView } from '@scripts/calendarSystem/helpers';
 import create from '@scripts/creators/create';
 import createMonths from '@scripts/creators/createMonths';
 import createYears from '@scripts/creators/createYears';
@@ -95,6 +95,8 @@ const handleItemClick = (self: Calendar, event: MouseEvent, type: (typeof typeCl
     },
   };
   selectByType[type]();
+  // The multiple-month picker can leave a month outside 0-11 (e.g. -1); upstream relies on Date overflow.
+  if (isCustomCalendar(self)) shiftCalendarMonth(self, 0);
 
   const actionByType = {
     year: () => self.onClickYear?.(self, event),

@@ -1,3 +1,4 @@
+import { isCustomCalendar, setCalendarMonthNames } from '@scripts/calendarSystem/helpers';
 import errorMessages from '@scripts/utils/getErrorMessages';
 import setContext from '@scripts/utils/setContext';
 import type { Calendar } from '@src/index';
@@ -39,6 +40,7 @@ const getLocale = (self: Calendar): void => {
   if (typeof self.locale === 'string' && !self.locale.length) throw new Error(errorMessages.notLocale);
 
   Array.from({ length: 7 }, (_, i) => getLocaleWeekday(self, i, self.locale as string));
+  if (isCustomCalendar(self)) return setCalendarMonthNames(self, self.locale as string, capitalizeFirstLetter);
   Array.from({ length: 12 }, (_, i) => getLocaleMonth(self, i, self.locale as string));
 };
 

@@ -1,4 +1,4 @@
-import { toCalendarView } from '@scripts/calendarSystem/helpers';
+import { getCalendarArrowsHidden, isCustomCalendar, toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import type { Calendar } from '@src/index';
@@ -9,6 +9,8 @@ const setVisibilityArrows = (arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement,
 };
 
 const handleDefaultType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement) => {
+  if (isCustomCalendar(self)) return setVisibilityArrows(arrowPrevEl, arrowNextEl, ...getCalendarArrowsHidden(self));
+
   const currentSelectedDate = getDate(getDateString(new Date(self.context.selectedYear as number, self.context.selectedMonth as number, 1)));
   const jumpDateMin = new Date(currentSelectedDate.getTime());
   const jumpDateMax = new Date(currentSelectedDate.getTime());
