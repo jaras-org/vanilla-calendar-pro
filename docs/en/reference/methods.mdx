@@ -75,6 +75,12 @@ calendar.set({ locale: 'de-AT', firstWeekday: 0 });
 calendar.init();
 ```
 
+When `set()` switches the [calendar](/docs/reference/settings#calendar), the configured `selectedMonth` and `selectedYear` are restated in the new calendar (the month that holds the 15th day of the old one), unless the same call passes both. With `{ month: false, year: false }`, the month on screen is carried over instead. Switching back returns the month you started from.
+
+```ts
+calendar.set({ calendar: 'islamic-umalqura' }, { month: false, year: false });
+```
+
 ---
 
 ## destroy()

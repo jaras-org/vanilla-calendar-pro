@@ -1,6 +1,6 @@
 ---
 title: Utilities
-description: Discover 4 convenient date utilities provided with Vanilla Calendar Pro. These features allow you to format dates, convert them to desired formats, and determine week numbers.
+description: Discover 7 convenient date utilities provided with Vanilla Calendar Pro. These features allow you to format dates, convert them to desired formats, and determine week numbers.
 section: 2
 ---
 
@@ -8,7 +8,7 @@ section: 2
 
 The calendar comes with its utilities, making it easy to work with date formatting.
 
-There are 4 utilities in total, and they are functions that can be used anywhere in your code, even without the calendar.
+There are 7 utilities in total, and they are functions that can be used anywhere in your code, even without the calendar.
 
 1. **`parseDates(dates: string[])`** — Takes an array of date ranges using a delimiter between dates in the string format `FormatDateString ('YYYY-MM-DD')`. Returns an array of dates in the string format `FormatDateString ('YYYY-MM-DD')`.
 ```ts
@@ -32,4 +32,22 @@ getDate('2024-12-12'); // return: Tue Dec 24 2024 00:00:00 GMT
 ```ts
 import { getWeekNumber } from 'vanilla-calendar-pro/utils';
 getWeekNumber('2024-12-12', 1); // return: {year: 2024, week: 50}
+```
+
+5. **`getCalendarDate(date: FormatDateString, calendar?: CalendarSystem)`**: takes a date in the string format `FormatDateString ('YYYY-MM-DD')` and a [calendar](/docs/reference/settings#calendar) (default `'gregory'`). Returns an object `{ year, month, day }` for that date in the calendar, with the month numbered from 0. The result does not depend on the time zone.
+```ts
+import { getCalendarDate } from 'vanilla-calendar-pro/utils';
+getCalendarDate('2026-09-21', 'islamic-umalqura'); // return: { year: 1448, month: 3, day: 10 } (10 Rabiʻ II 1448)
+```
+
+6. **`getDateFromCalendar(year: number, month: number, day: number, calendar?: CalendarSystem)`**: the reverse of `getCalendarDate`. Returns the date in the string format `FormatDateString ('YYYY-MM-DD')`. Months and days outside their range roll over, like `Date`.
+```ts
+import { getDateFromCalendar } from 'vanilla-calendar-pro/utils';
+getDateFromCalendar(1448, 0, 1, 'islamic-umalqura'); // return: '2026-06-16' (1 Muharram 1448)
+```
+
+7. **`isCalendarSupported(calendar: string)`**: returns whether the current browser can use a [calendar](/docs/reference/settings#calendar). `'gregory'` is always supported, and `'islamic-umalqura'` needs `Intl` support for it.
+```ts
+import { isCalendarSupported } from 'vanilla-calendar-pro/utils';
+isCalendarSupported('islamic-umalqura'); // return: true
 ```

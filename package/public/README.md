@@ -13,6 +13,28 @@
 
 This is a versatile JavaScript date and time picker component with TypeScript support, compatible with any JavaScript frameworks and libraries. It is designed to be lightweight, easy to use, and feature-rich, without relying on external dependencies.
 
+## Hijri (Umm al-Qura) calendar — fork addition
+
+```ts
+import { Calendar } from 'vanilla-calendar-pro';
+import { getCalendarDate, getDateFromCalendar } from 'vanilla-calendar-pro/utils';
+
+new Calendar('#calendar', {
+  calendar: 'islamic-umalqura', // default: 'gregory' (upstream behaviour)
+  locale: 'ar-SA',
+  firstWeekday: 6,
+  selectedWeekends: [5, 6],
+}).init();
+
+getCalendarDate('2026-09-21', 'islamic-umalqura'); // { year: 1448, month: 3, day: 10 }
+getDateFromCalendar(1448, 0, 1, 'islamic-umalqura'); // '2026-06-16'
+```
+
+- Grids, month names, navigation, the month/year pickers, bounds and multiple months follow Hijri months (29 or 30 days), using the browser's `Intl`.
+- Every date value stays a Gregorian `'YYYY-MM-DD'` string (`selectedDates`, `disableDates`, `dateMin`, `popups` keys, `data-vc-date`, …). Month/year values (`selectedMonth`, `selectedYear`, `context.*`) are in the active calendar, with 0 = Muharram.
+- `set({ calendar })` restates the configured month in the new calendar; `{ month: false, year: false }` keeps the visible one.
+- The Umm al-Qura table in browsers covers 1300–1600 AH; it can differ by a day from official announcements. Week numbers stay ISO-style Gregorian weeks.
+
 ## Key Features
 
 - **Lightweight**: The final JavaScript file is minified and optimized for fast loading.
