@@ -1,3 +1,4 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import getWeekStart from '@scripts/utils/getWeekStart';
@@ -8,7 +9,10 @@ import type { Calendar, FormatDateString } from '@src/index';
 const initWeek = (self: Calendar, reanchor = false) => {
   const { displayWeekDate, selectedMonth, selectedYear, selectedDates, dateToday } = self.context;
 
-  const isSelectedMonth = (date: Date) => date.getMonth() === selectedMonth && date.getFullYear() === selectedYear;
+  const isSelectedMonth = (value: Date) => {
+    const date = toCalendarView(self, value);
+    return date.getMonth() === selectedMonth && date.getFullYear() === selectedYear;
+  };
 
   if (displayWeekDate && !reanchor) {
     const weekStart = getDate(displayWeekDate);

@@ -1,3 +1,4 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import getDateString from '@scripts/utils/getDateString';
 import type { Calendar } from '@src/index';
@@ -35,8 +36,8 @@ const handleDefaultType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl
 };
 
 const handleYearType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: HTMLElement) => {
-  const dateMin = getDate(self.context.dateMin);
-  const dateMax = getDate(self.context.dateMax);
+  const dateMin = toCalendarView(self, self.context.dateMin);
+  const dateMax = toCalendarView(self, self.context.dateMax);
   const isArrowPrevHidden = !!(dateMin.getFullYear() && self.context.displayYear - 7 <= dateMin.getFullYear());
   const isArrowNextHidden = !!(dateMax.getFullYear() && self.context.displayYear + 7 >= dateMax.getFullYear());
 
@@ -54,7 +55,7 @@ const handleWeekType = (self: Calendar, arrowPrevEl: HTMLElement, arrowNextEl: H
   const ownerYear = (start: Date) => {
     const reference = new Date(start);
     reference.setDate(start.getDate() + 3);
-    return reference.getFullYear();
+    return toCalendarView(self, reference).getFullYear();
   };
   const prevChangesYear = !self.selectionYearsMode && ownerYear(prevWeekStart) !== self.context.selectedYear;
   const nextChangesYear = !self.selectionYearsMode && ownerYear(nextWeekStart) !== self.context.selectedYear;

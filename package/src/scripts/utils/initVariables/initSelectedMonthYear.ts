@@ -1,3 +1,4 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import parseDates from '@scripts/utils/parseDates';
 import setContext from '@scripts/utils/setContext';
@@ -9,7 +10,7 @@ const displayClosestValidDate = (self: Calendar) => {
   const isAfter = (date1: string | Date, date2: Date) => new Date(date1).getTime() > date2.getTime();
 
   const gotoMonthYear = (dateOrStr: Date) => {
-    const gotoDate = new Date(dateOrStr);
+    const gotoDate = toCalendarView(self, new Date(dateOrStr));
     setInitialContext(self, gotoDate.getMonth() as Range<12>, gotoDate.getFullYear());
   };
 
@@ -38,7 +39,7 @@ const initSelectedMonthYear = (self: Calendar) => {
   const isJumpToSelectedDate = self.enableJumpToSelectedDate && self.selectedDates?.[0] && self.selectedMonth === undefined && self.selectedYear === undefined;
 
   if (isJumpToSelectedDate) {
-    const selectedDate = getDate(parseDates(self.selectedDates)[0]);
+    const selectedDate = toCalendarView(self, parseDates(self.selectedDates)[0]);
     setInitialContext(self, selectedDate.getMonth() as Range<12>, selectedDate.getFullYear());
     return;
   }
@@ -50,8 +51,8 @@ const initSelectedMonthYear = (self: Calendar) => {
 
   setInitialContext(
     self,
-    (isValidMonth ? Number(self.selectedMonth) : getDate(self.context.dateToday).getMonth()) as Range<12>,
-    isValidYear ? Number(self.selectedYear) : getDate(self.context.dateToday).getFullYear(),
+    (isValidMonth ? Number(self.selectedMonth) : toCalendarView(self, self.context.dateToday).getMonth()) as Range<12>,
+    isValidYear ? Number(self.selectedYear) : toCalendarView(self, self.context.dateToday).getFullYear(),
   );
 };
 

@@ -1,8 +1,8 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import createLayouts from '@scripts/creators/createLayouts';
 import setMonthOrYearModifier from '@scripts/creators/setMonthOrYearModifier';
 import visibilityArrows from '@scripts/creators/visibilityArrows';
 import visibilityTitle from '@scripts/creators/visibilityTitle';
-import getDate from '@scripts/utils/getDate';
 import updateRovingTabIndex from '@scripts/utils/rovingTabIndex';
 import setContext from '@scripts/utils/setContext';
 import type { Calendar } from '@src/index';
@@ -55,7 +55,8 @@ const createYears = (self: Calendar, target?: HTMLElement) => {
       yearsEl.appendChild(rowEl);
     }
 
-    const yearDisabled = i < getDate(self.context.dateMin).getFullYear() + relationshipID || i > getDate(self.context.dateMax).getFullYear();
+    const yearDisabled =
+      i < toCalendarView(self, self.context.dateMin).getFullYear() + relationshipID || i > toCalendarView(self, self.context.dateMax).getFullYear();
     const yearEl = createYearEl(self, templateYearEl, selectedYear, yearDisabled, i);
     rowEl?.appendChild(yearEl);
     if (self.onCreateYearEls) self.onCreateYearEls(self, yearEl);

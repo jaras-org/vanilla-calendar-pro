@@ -1,3 +1,4 @@
+import { toCalendarView } from '@scripts/calendarSystem/helpers';
 import getDate from '@scripts/utils/getDate';
 import parseDates from '@scripts/utils/parseDates';
 import type { Calendar, FormatDateString, WeekDayID } from '@src/index';
@@ -27,7 +28,7 @@ const setDateModifier = (
     getDateTime(self.context.displayDateMax) < dateTime ||
     self.context.disableDates?.includes(dateStr) ||
     (!self.selectionMonthsMode && monthType !== 'current') ||
-    (!self.selectionYearsMode && getDate(dateStr).getFullYear() !== currentYear);
+    (!self.selectionYearsMode && toCalendarView(self, dateStr).getFullYear() !== currentYear);
 
   // Check if the date is disabled
   updateAttribute(dateEl, isDisabled, 'data-vc-date-disabled');

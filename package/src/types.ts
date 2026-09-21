@@ -113,6 +113,7 @@ export type ContextVariables = {
   cleanupHandlers: Array<() => void>;
   cleanupSystemTheme?: () => void;
   currentType: TypesCalendar;
+  calendar: CalendarSystem;
   locale: LocaleStated;
   mainElement: HTMLElement;
   originalElement: HTMLElement;
