@@ -167,6 +167,17 @@ describe('Accessibility (keyboard and focus)', () => {
     cy.get('#calendar-popups [data-vc="content"]').should('not.have.attr', 'aria-multiselectable');
   });
 
+  it('Hijri calendars have no ARIA violations', () => {
+    cy.visit('/pages/hijri/');
+    checkA11y();
+  });
+
+  it('Hijri month picker view has no ARIA violations', () => {
+    cy.visit('/pages/hijri/');
+    cy.get('#hijri-default [data-vc="month"]').click();
+    checkA11y('#hijri-default');
+  });
+
   it('takes the closed popup out of the focus order and the accessibility tree', () => {
     cy.visit('/pages/a11y/');
     cy.get('#calendar-input').click();
